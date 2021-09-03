@@ -5,7 +5,7 @@ import { getAlunos, saveAluno, getAluno, updateAluno, deleteAluno, finishedMatri
 const routes = Router()
 
 routes.get("/home", (request: Request, response: Response) =>{
-    return response.json({message: "Hello Turma!" })
+    return response.json({message: "Teste" })
 })
 
 routes.get("/alunos", getAlunos)
