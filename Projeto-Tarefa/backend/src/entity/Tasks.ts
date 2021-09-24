@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeor
 
 @Entity()
 export class Tasks{
+    
     @PrimaryGeneratedColumn()
     id: number;
 
