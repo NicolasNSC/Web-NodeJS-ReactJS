@@ -1,22 +1,26 @@
+/* eslint-disable no-restricted-globals */
 import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 import moment from "moment";
+import "./index.css";
 
 interface IAlunos {
   id: number;
   name: string;
   ra: string;
+  age: number;
   birth_date: Date;
   address: string;
   registration: boolean;
-  age: number;
   created_at: Date;
   updated_at: Date;
 }
 
 const Alunos: React.FC = () => {
   const [alunos, setAlunos] = useState<IAlunos[]>([]);
+  const history = useHistory();
 
   useEffect(() => {
     loadAlunos();
@@ -32,18 +36,44 @@ const Alunos: React.FC = () => {
     return moment(date).format("DD/MM/YYYY");
   }
 
+  function newAluno() {
+    history.push("/aluno_cadastro");
+  }
+
+  function editAluno(id: number) {
+    history.push(`/aluno_cadastro/${id}`);
+  }
+
+  function viewAlunos(id: number) {
+    history.push(`/aluno/${id}`);
+  }
+
+  async function finishedMatricula(id: number) {
+    await api.patch(`/matricula/${id}`);
+    loadAlunos();
+  }
+
+  async function deleteAluno(id: number) {
+    await api.delete(`/aluno/${id}`);
+    loadAlunos();
+  }
+
   return (
     <div className="container">
       <br />
-      <h1>Página de Alunos</h1>
+      <div className="aluno-header">
+        <h1>Alunos</h1>
+        <Button variant="dark" size="sm" onClick={newAluno}>
+          Novo Aluno
+        </Button>
+      </div>
       <br />
       <Table striped bordered hover variant="secondary">
         <thead>
           <tr>
-            <th>#</th>
+            <th>ID</th>
             <th>Nome</th>
             <th>RA</th>
-            <th>Idade</th>
             <th>Nascimento</th>
             <th>Endereço</th>
             <th>Registro</th>
@@ -56,22 +86,40 @@ const Alunos: React.FC = () => {
               <td>{alunos.id}</td>
               <td>{alunos.name}</td>
               <td>{alunos.ra}</td>
-              <td>{alunos.age}</td>
               <td>{formatDate(alunos.birth_date)}</td>
               <td>{alunos.address}</td>
-              <td>{alunos.registration ? "Matriculado" : "Pendente"}</td>
+              <td>
+                {alunos.registration
+                  ? "Desmatriculado (a)"
+                  : " Matriculado (a)"}
+              </td>
 
               <td>
-                <Button size="sm" variant="primary">
+                <Button
+                  size="sm"
+                  variant="primary"
+                  disabled={alunos.registration}
+                  onClick={() => editAluno(alunos.id)}
+                >
                   Editar
                 </Button>{" "}
-                <Button size="sm" variant="success">
-                  Finalizar
+                <Button
+                  size="sm"
+                  variant="success"
+                  disabled={alunos.registration}
+                  onClick={() => finishedMatricula(alunos.id)}
+                >
+                  Desmatricular
                 </Button>{" "}
-                <Button size="sm" variant="warning">
+                <Button
+                  size="sm"
+                  variant="warning"
+                  onClick={() => viewAlunos(alunos.id)}
+                >
                   Visualizar
                 </Button>{" "}
-                <Button size="sm" variant="danger">
+                <Button size="sm" variant="danger"
+                onClick={() => deleteAluno(alunos.id)}>
                   Remover
                 </Button>{" "}
               </td>

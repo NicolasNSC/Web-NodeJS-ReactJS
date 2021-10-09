@@ -1,34 +1,39 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 
 @Entity()
 export class Alunos {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  name: string;
 
-    @Column()
-    name: string;
+  @Column()
+  ra: string;
 
-    @Column()
-    ra: string;
+  @Column()
+  birth_date: Date;
 
-    @Column()
-    birth_date: Date;
+  @Column()
+  address: string;
 
-    @Column()
-    address: string;
+  @Column({
+    default: false,
+  })
+  registration: boolean;
 
-    @Column({
-        default: true
-    })
-    registration: boolean;
+  @Column()
+  age: number;
 
-    @Column()
-    age: number;
+  @CreateDateColumn()
+  create_at: Date;
 
-    @CreateDateColumn()
-    create_at: Date;
-    
-    @UpdateDateColumn()
-    updated_at: Date;
+  @UpdateDateColumn()
+  updated_at: Date;
 }
