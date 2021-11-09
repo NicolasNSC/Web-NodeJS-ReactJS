@@ -37,7 +37,7 @@ const Tasks: React.FC = () => {
   }
 
   function editTask(id: number) {
-    history.push("/tarefas_cadastro/${id");
+    history.push("/tarefas_cadastro/id");
   }
 
   function viewTask(id: number) {
